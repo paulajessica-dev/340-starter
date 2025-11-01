@@ -23,7 +23,7 @@
 .nav-list {
   display: flex;
   justify-content: center;
-  gap: 14rem;
+  gap: 9rem;
   list-style: none;
 }
 
