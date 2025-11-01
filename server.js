@@ -22,7 +22,7 @@ app.set("layout", "./layouts/layout") // not at views root
 /* ***********************
  * Routes
  *************************/
-app.use(static)
+app.use(static) 
 
 // Index route
 app.get("/", function(req,res) {
