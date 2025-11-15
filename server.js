@@ -12,6 +12,7 @@ const static = require("./routes/static")
 const expressLayouts = require("express-ejs-layouts")
 const baseController = require("./controllers/baseController")
 const inventoryRoute = require("./routes/inventoryRoute")
+const errorHandler = require("./middleware/errorHandler")
 
 /* ***********************
  * View Engine and Templates
@@ -34,23 +35,28 @@ app.get("/", baseController.buildHome)
 app.use("/inv", inventoryRoute)
 
 /* ***********************
-* Express Error Handler
-* Place after all other middleware
-*************************/
-app.use(async (err, req, res, next) => {
-  let nav = await utilities.getNav()
-  console.error(`Error at: "${req.originalUrl}": ${err.message}`)
-  res.render("errors/error", {
-    title: err.status || 'Server Error',
-    message: err.message,
-    nav
+ * Test Error Route
+ *************************/
+app.get("/error", (req, res, next) => {
+  const error = new Error("Something went wrong. We're working to fix it!")
+  error.status = 500
+  next(error)
+})
+
+/* ***********************
+ * 404 - Not Found Handler
+ *************************/
+app.use((req, res, next) => {
+  next({
+    status: 404,
+    message: "Sorry, we appear to have lost that page."
   })
 })
 
-// File Not Found Route - must be last route in list
-app.use(async (req, res, next) => {
-  next({status: 404, message: 'Sorry, we appear to have lost that page.'})
-})
+/* ***********************
+ * Global Error Handler (FINAL)
+ *************************/
+app.use(errorHandler)
 
 /* ***********************
  * Local Server Information
