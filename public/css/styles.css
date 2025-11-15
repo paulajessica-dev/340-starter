@@ -21,7 +21,7 @@ nav ul {
   background-color: black;
   border-radius: 0.25rem;
   list-style: none;
-  gap: 8rem
+  gap: 5rem
 }
 
 .nav-list a {
@@ -401,7 +401,7 @@ body {
   #inv-display li a {
     font-size: 0.8rem;
   }
-  
+
   #inv-display .namePrice {
     padding: 0.8rem;
     text-align: center;
