@@ -33,9 +33,11 @@ async function registerAccount(account_firstname, account_lastname, account_emai
       account_password
     ])
   } catch (error) {
-    throw error   // <-- agora mostra o erro real!
+    throw error  
   }
 }
+
+
 
 
 module.exports = {checkExistingEmail, registerAccount}
