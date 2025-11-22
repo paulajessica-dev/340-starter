@@ -1,3 +1,5 @@
+const pool = require("../database/")
+
 /* **********************
  *   Check for existing email
  * ********************* */
