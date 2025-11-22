@@ -137,8 +137,7 @@ nav ul {
 body {
   border-style: solid;
   border-color: #970b0e;
-  border-width: 50px 150px 220px;
-  
+  border-width: 50px 150px 220px;  
   padding: 0.5rem;
   box-sizing: border-box;
 }

@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title><%= title %></title>
+  <style>
+    main {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding-top: 35px;
+    }
+
+    body {      
+        padding: 0.5rem;      
+        justify-content: center;
+        align-items: center;      
+        margin: 0;
+        background-color: #f5f5f5;
+    }
+
+    .register-container {
+        display: block;    
+        background: white;
+        width: 350px;
+        padding: 2rem;
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      
+    }
+
+    h1 {
+      font-size: 1.8rem;
+      color: #970b0e;
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+
+    form label {
+      font-size: 1rem;
+      color: #333;
+      display: block;
+      margin-bottom: 0.3rem;
+    }
+
+
+    form input {
+        width: 100%;
+        padding: .5rem;
+        margin-top: .25rem;
+        border: 1px solid #999;
+        border-radius: 4px;
+        font-size: 1rem;
+    }
+
+    button {
+        width: 100%;
+        background-color: #970b0e;
+        color: white;
+        padding: 0.8rem;
+        border: none;
+        border-radius: 5px;
+        font-size: 1.1rem;
+        cursor: pointer;
+        margin-top: 1rem;
+    }
+
+    button:hover {
+        background-color: #7d080b;
+    }
+
+    .notice {
+        background-color: #ffe0e0;
+        border: 1px solid #cc0000;
+        color: #cc0000;
+        padding: 1rem;
+        margin-bottom: 1.5rem;
+        border-radius: 4px;
+    }
+
+    .notice ul {
+        margin-left: 1rem;
+        padding-left: 1rem;
+    }
+
+    .form-instructions {
+        display: block;
+        color: #555;
+        font-size: .9rem;
+        margin-top: .25rem;
+        margin-bottom: .5rem;
+    }
+  </style>
+</head>
+  <body>   
+
+      <main class="register-container">
+
+        
+
+        <% if (errors) { %>
+          <ul class="notice">
+        <% errors.array().forEach(error => { %>
+          <li><%= error.msg %></li>
+        <%  }) %>
+        </ul>
+        <% } %>
+        <h1><%= title %></h1>
+
+        <% messages() %>
+
+        <!-- Exibir erros (validation middleware) -->
+        <% if (errors && errors.length > 0) { %>
+          <div class="errors">
+            <ul>
+              <% errors.forEach(error => { %>
+                <li><%= error.msg %></li>
+              <% }) %>
+            </ul>
+          </div>
+        <% } %>
+        
+        <form action="/account/register" method="POST">
+
+          <label for="account_firstname">First Name</label>
+          <input
+            type="text"
+            id="account_firstname"
+            name="account_firstname"
+            required
+            value="<%= locals.account_firstname ? locals.account_firstname : '' %>"
+          >
+
+          <label for="account_lastname">Last Name</label>
+          <input
+            type="text"
+            id="account_lastname"
+            name="account_lastname"
+            required
+            value="<%= locals.account_lastname ? locals.account_lastname : '' %>"
+          >
+
+          <label for="account_email">Email</label>
+          <input
+            type="email"
+            id="account_email"
+            name="account_email"
+            required
+            value="<%= locals.account_email ? locals.account_email : '' %>"
+          >
+          
+            <label for="account_password">Password</label>
+            <div>
+              <input
+                type="password"
+                id="account_password"
+                name="account_password"
+                required
+                pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{12,}$"
+              >
+              </div>
+            <span class="pw-info">
+              Password must be at least 12 characters and contain at least
+              1 uppercase letter, 1 number, and 1 special character.
+            </span>
+          
+
+          <button type="submit" class="submitBtn">Register</button>
+        </form>
+
+
+      </main>
+      
+    </div>
+    
+  </body>
+</html>
