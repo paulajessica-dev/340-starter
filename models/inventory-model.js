@@ -21,6 +21,8 @@ async function getAllClassifications() {
 }
 
 
+
+
 /* ***************************
  *  Get all inventory items and classification_name by classification_id
  * ************************** */

@@ -18,7 +18,8 @@ const session = require("express-session")
 const messages = require("express-messages")
 const pool = require('./database/')
 const bodyParser = require("body-parser")
-
+const cookieParser = require("cookie-parser")
+const utilities = require("./utilities/index.js")
 
 
 /* ***********************
@@ -45,6 +46,8 @@ app.use(function(req, res, next){
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
+app.use(cookieParser())
+app.use(utilities.checkJWTToken)
 
 /* ***********************
  * View Engine and Templates
@@ -52,6 +55,7 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.set("view engine", "ejs")
 app.use(expressLayouts)
 app.set("layout", "./layouts/layout") // not at views root
+
 
 
 /* ***********************
