@@ -8,17 +8,28 @@ const validatevehicle = require("../utilities/vehicle-validation")
 
 // Route to build inventory by classification view
 router.get("/type/:classification_id", invController.buildByClassificationId)
+
 // Route to build inventory by inventory view
 router.get("/detail/:inv_id", invController.buildByInvId)
+
 // Route to build inventory by management view
 router.get("/getInventory/:classification_id", utilities.handleErrors(invController.getInventoryJSON))
 
+// Route to build inventory by update view
+router.get("/edit/:inv_id", utilities.handleErrors(invController.buildEditVehicle))
+
+// Route to update inventory by update view
+router.post("/editvehicle",
+  validatevehicle.vehicleRules(),
+  validatevehicle.checkUpdateData,
+  utilities.handleErrors(invController.updateVehicle)
+)
+
 // Route to build a new inventory by management view
-router.get("/", invController.buildManagement);
+router.get("/", invController.buildManagement)
 
 // Route to build a new inventory by addclassification view
 router.get("/addclassification", utilities.handleErrors(invController.buildAddClassification))
-
 // Route to add new classification
 router.post(
   "/addclassification",

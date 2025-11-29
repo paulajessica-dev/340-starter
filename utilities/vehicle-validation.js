@@ -7,9 +7,9 @@ const validate = {}
 // ====== VALIDATION RULES ======
 validate.vehicleRules = () => {
   return [
-    body("classification_name")
-      .trim()
-      .isInt().withMessage("Please choose a valid classification."),
+    body("classification_id")
+    .isInt()
+    .withMessage("Please choose a valid classification."),
 
     body("inv_make")
       .trim()
@@ -75,8 +75,27 @@ validate.checkVehicleData = async (req, res, next) => {
       locals: req.body
     });
   }
-
   next();
 };
+
+  // ====== CHECK VALIDATION RESULTS ======
+validate.checkUpdateData = async (req, res, next) => {
+  const errors = validationResult(req)
+  if (!errors.isEmpty()) {
+    const classifications = await invModel.getClassifications()
+    const classification_id = parseInt(req.body.classification_id)
+    const classificationSelect =
+    await utilities.buildClassificationSelected(classification_id, req.body.classification_name)
+
+    return res.render("./inventory/editvehicle", {
+      title: "Edit Vehicle",
+      nav: await utilities.getNav(),
+      errors: errors.array(),
+      classificationSelect,
+      ...req.body
+    })
+  }
+  next()
+}
 
 module.exports = validate

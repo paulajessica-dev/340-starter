@@ -140,5 +140,24 @@ Util.getClassificationList = async function(classifications) {
   return list
 }
 
+
+/* ****************************************
+ *  GET selected classification vehicle view
+ * ************************************ */
+Util.buildClassificationSelected = async function (classification_id) {
+  const classifications = await invModel.getClassifications()
+  let list = '<select id="classificationList" name="classification_id" required>'
+
+  classifications.rows.forEach((item) => {
+    list += `<option value="${item.classification_id}"
+              ${item.classification_id == classification_id ? "selected" : ""}>
+              ${item.classification_name}
+              </option>`
+  })
+
+  list += "</select>"
+  return list
+}
+
  
 module.exports = Util
