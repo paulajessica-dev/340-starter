@@ -117,6 +117,21 @@ validate.checkLoginData = async (req, res, next) => {
   next()
 }
 
+/* *******************************
+ *  Check login type
+ *********************************/
+validate.checkAdmin = async (req, res, next) => {
+  
+  if (!req.account) {
+    req.flash("notice", "You must log in first.")
+    return res.redirect("/account/login")
+  }
+  if (req.account.account_type && req.account.account_type.toLowerCase() === "admin") {
+    return next()
+  }
+  req.flash("notice", "You do not have permission to access that page.")
+  return res.redirect("/account/management")
+}
 
 
 module.exports = validate

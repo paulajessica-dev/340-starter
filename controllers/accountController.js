@@ -83,9 +83,22 @@ async function buildManagement(req, res) {
     title: "Account Management",
     nav,
     messages: req.flash(),
+    customHeader: true
   })
 }
 
+/* ****************************************
+ *  Build Admin Management View
+ * *************************************** */
+async function buildAdminManagement(req, res) {
+  let nav = await utilities.getNav()
+  res.render("account/managementadmin", {
+    title: "Account Management",
+    nav,
+    messages: req.flash(),
+    customHeader: true
+  })
+}
 
 /* ****************************************
  *  Process login request
@@ -107,16 +120,30 @@ async function accountLogin(req, res) {
   try {
     if (await bcrypt.compare(account_password, accountData.account_password)) {
       delete accountData.account_password
-      const accessToken = jwt.sign(accountData, process.env.ACCESS_TOKEN_SECRET, { expiresIn: 3600 * 1000 })
-      if(process.env.NODE_ENV === 'development') {
-        res.cookie("jwt", accessToken, { httpOnly: true, maxAge: 3600 * 1000 })
-      } else {
-        res.cookie("jwt", accessToken, { httpOnly: true, secure: true, maxAge: 3600 * 1000 })
+
+        const payload = {
+          account_id: accountData.account_id,
+          account_firstname: accountData.account_firstname,
+          account_lastname: accountData.account_lastname,
+          account_email: accountData.account_email,
+          account_type: accountData.account_type
+        }
+
+      const accessToken = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "1h"})
+      const cookieOptions = {  httpOnly: true,   maxAge: 3600 * 1000}
+
+      if(process.env.NODE_ENV !== 'production') {
+        cookieOptions.secure = false;
+      }
+      res.cookie("jwt", accessToken, cookieOptions)
+
+      if (payload.account_type.toLowerCase() === "admin") {
+        return res.redirect("/account/managementadmin")
       }
       return res.redirect("/account/management")
     }
     else {
-      req.flash("message notice", "Please check your credentials and try again.")
+      req.flash("notice", "Please check your credentials and try again.")
       res.status(400).render("account/login", {
         title: "Login",
         nav,
@@ -130,5 +157,29 @@ async function accountLogin(req, res) {
 }
 
 
+/* *******************************
+ *  Process to take decode jwt
+ *********************************/
+async function authenticateToken(req, res, next) {
+  console.log("authenticateToken: req.cookies =", req.cookies)
+  const token = req.cookies && req.cookies.jwt
+  if (!token) {
+    console.log("authenticateToken: no token found")
+    req.flash("notice", "You must log in first.")
+    return res.redirect("/account/login")
+  }
 
-module.exports = { buildLogin, buildRegister, registerAccount, buildManagement, accountLogin}
+  try {
+    const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET)
+    console.log("authenticateToken: decoded =", decoded)
+    req.account = decoded
+    next()
+  } catch (err) {
+    console.log("authenticateToken: verify error =", err.message)
+    req.flash("notice", "Session expired. Please log in again.")
+    return res.redirect("/account/login")
+  }
+}
+
+
+module.exports = { buildLogin, buildRegister, registerAccount, buildManagement, buildAdminManagement, accountLogin, authenticateToken}

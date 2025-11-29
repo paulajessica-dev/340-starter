@@ -11,13 +11,20 @@ router.get(
   utilities.handleErrors(accountController.buildLogin)
 )
 
-// GET → Show view Login Management
+// GET → Show view Admin Login Management
 router.get(
-  "/management",
-  utilities.checkLogin,
-  utilities.handleErrors(accountController.buildManagement)
+  "/managementadmin",
+  accountController.authenticateToken,
+  validate.checkAdmin,
+  utilities.handleErrors(accountController.buildAdminManagement)
 );
 
+// GET → Show view Client Login Management
+router.get(
+  "/management",
+  accountController.authenticateToken,
+  utilities.handleErrors(accountController.buildManagement)
+);
 
 // Route to register view
 router.get(

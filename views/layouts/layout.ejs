@@ -1,11 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
   <%- include('../partials/head') %>
-  
 
   <body>
     <div id="wrapper">
-      <%- include('../partials/header') %>
+      <% if (typeof customHeader !== 'undefined' && customHeader) { %>
+        <%- include('../partials/headeraccount') %>
+      <% } else { %>
+        <%- include('../partials/header') %>
+      <% } %>
+
       
       <%- include('../partials/navigation') %>
 

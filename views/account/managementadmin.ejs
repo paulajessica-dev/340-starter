@@ -28,18 +28,10 @@
 
     h2 {
       font-size: 1.2rem;      
-      padding-top: 1.5rem;
-      padding-bottom: 1.5rem;
+      margin-bottom: 1.5rem;
     }
 
-    p {
-      padding-bottom: 1rem;
-    }
     
-    table {
-      padding-top: 1rem;
-    }
-
     .link {
       margin-top: 1rem;
       display: block;
@@ -51,25 +43,27 @@
       text-decoration: underline;
     }
 
+    ul, li {
+      list-style: none;
+    }
+
+
   </style>
 </head>
-
 <body>
 
-  <div class="inv-container">
-    <%- messages() %>
+  <div class="management-container">
     <h1><%= title %></h1>
+    <h2>Welcome Basic</h2>
+    <% if (messages.notice) { %>
+      <p><%= messages.notice %></p>
+    <% } %>
+    <p>You're Logged in</p>
     
-    <li><a class="link" href="/inv/addclassification">Add New Classification</a></li>
-    <li><a class="link" href="/inv/addvehicle">Add New Vehicle</a></li>
-
-    <h2>Manage Inventory</h2>
-    <p>Choose a classification to see those inventory items.</p>
-    <%- classificationSelect %>
-    <table id="inventoryDisplay"></table>
     
-    <noscript>JavaScript must be enabled to use this page.</noscript>
-    <script src="../../js/inventory.js"></script>
+    <a class="link" href="/account/">Edit Account Information</a>
+    <a class="link" href="/inv/">Inventory Management</a>
+    
   </div>
 
 </body>
