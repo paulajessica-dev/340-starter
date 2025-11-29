@@ -25,6 +25,15 @@ router.post("/editvehicle",
   utilities.handleErrors(invController.updateVehicle)
 )
 
+// Route to build inventory by delete view
+router.get("/delete/:inv_id", utilities.handleErrors(invController.buildDeleteVehicle))
+
+// Route to delete inventory by update view
+router.post("/deletevehicle",
+  utilities.handleErrors(invController.deleteVehicle)
+)
+
+
 // Route to build a new inventory by management view
 router.get("/", invController.buildManagement)
 

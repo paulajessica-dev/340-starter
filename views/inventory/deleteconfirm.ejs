@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title><%= title %></title>
+  <style>
+    main {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding-top: 35px;
+    }
+
+    body {      
+      padding: 0.5rem;      
+      justify-content: center;
+      align-items: center;      
+      margin: 0;
+      background-color: #f5f5f5;
+    }
+
+    .addvehicle-container {      
+      background: white;
+      width: 500px;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 1.8rem;
+      color: #970b0e;
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group {
+      margin-bottom: 1rem;
+      text-align: left;
+      width: 100%;
+    }
+
+    label {
+      font-size: 1rem;
+      color: #333;
+      display: block;
+      padding-top: 1rem;
+      margin-bottom: 0.3rem;
+    }
+
+    input {
+      width: 100%;
+      padding: 0.7rem;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      outline: none;
+    }
+
+    input:focus {      
+      background-color: #e7c4c4;
+    }
+
+    button {
+      width: 100%;
+      background-color: #970b0e;
+      color: white;
+      padding: 0.8rem;
+      border: none;
+      border-radius: 5px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      margin-top: 1rem;
+    }
+
+    button:hover {
+      background-color: #7d080b;
+    }
+
+  </style>
+</head>
+<body>
+
+  <div class="addvehicle-container">
+    <%- messages() %>
+
+    <% if (typeof errors !== "undefined") { %>
+      <ul style="color:red;">
+        <% errors.forEach(e => { %>
+          <li><%= e.msg %></li>
+        <% }) %>
+      </ul>
+    <% } %>
+
+    
+
+    <form  action="/inv/deletevehicle" method="POST">
+        <h1><%= title %></h1>
+      
+        <div class="form-group">
+            <label for="classification_name">Classification</label>
+            <%- classificationSelect %>
+            <label for="inv_make">Make</label>
+                <input
+                    type="text"
+                    id="inv_make"
+                    name="inv_make"                    
+                    required
+                    value="<%= locals.inv_make ? locals.inv_make : '' %>"
+                    readonly>       
+
+        
+            <label for="inv_model">Model</label>
+                <input
+                    type="text"
+                    id="inv_model"
+                    name="inv_model"
+                    required
+                    value="<%= locals.inv_model ? locals.inv_model : '' %>"
+                readonly>        
+                   
+            <label for="inv_price">Price</label>
+                <input
+                    type="text"
+                    id="inv_price"
+                    name="inv_price"                    
+                    required
+                    value="<%= locals.inv_price ? locals.inv_price : '' %>"
+                readonly>       
+
+            <label for="inv_year">Year</label>
+                <input
+                    type="text"
+                    id="inv_year"
+                    name="inv_year"                    
+                    required
+                    value="<%= locals.inv_year ? locals.inv_year : '' %>"
+                readonly>           
+            
+        </div>            
+        <p>Confirm Deletion - The delete is permanent.</p>
+        <button type="submit" >Delete Vehicle</button>
+        
+        <input type="hidden" name="inv_id"
+          <% if(locals.inv_id) { %> value="<%= locals.inv_id %>"
+        <% } %>>
+      </form>
+
+  </div>
+
+</body>
+</html>

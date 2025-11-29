@@ -291,8 +291,7 @@ invCont.updateVehicle = async function (req, res, next) {
     
     const itemData = await invModel.getVehicleByInvId(inv_id)
     const classificationSelect = await utilities.buildClassificationSelected(itemData.classification_id, itemData.classification_name)
-    console.log("REQ.BODY:", req.body)
-    
+        
     const itemName = `${inv_make} ${inv_model}`
     req.flash("notice", "Sorry, the insert failed.")
     res.status(501).render("inventory/editvehicle", {
@@ -315,6 +314,54 @@ invCont.updateVehicle = async function (req, res, next) {
   }
   
 }
+
+
+/* ***************************
+ *  Build delete vehicle view
+ * ************************** */
+invCont.buildDeleteVehicle = async function (req, res, next) {
+  const inv_id = parseInt(req.params.inv_id)
+  let nav = await utilities.getNav()
+  const itemData = await invModel.getVehicleByInvId(inv_id)
+  const classificationSelect = await utilities.buildClassificationSelected(itemData.classification_id)
+  const itemName = `${itemData.inv_make} ${itemData.inv_model}`
+  res.render("./inventory/deleteconfirm", {
+    title: "Remove " + itemName,
+    nav,
+    classificationSelect: classificationSelect,
+    errors: [],
+    inv_id: itemData.inv_id,
+    inv_make: itemData.inv_make,
+    inv_model: itemData.inv_model,
+    inv_year: itemData.inv_year,
+    inv_description: itemData.inv_description,
+    inv_image: itemData.inv_image,
+    inv_thumbnail: itemData.inv_thumbnail,
+    inv_price: itemData.inv_price,
+    inv_miles: itemData.inv_miles,
+    inv_color: itemData.inv_color,
+    classification_id: itemData.classification_id
+  })
+}
+
+
+/* ***************************
+ *  Delete Vehicle Data
+ * ************************** */
+invCont.deleteVehicle = async function (req, res, next) {
+  const { inv_id } = req.body
+
+  const deleteResult = await invModel.deleteVehicle(inv_id)
+
+  if (deleteResult) {
+    req.flash("notice", "Vehicle was successfully deleted.")
+    return res.redirect("/inv/")
+  }
+ else
+  req.flash("notice", "Sorry, the delete failed.")
+  return res.status(501).redirect(`/inv/`)
+}
+
 
 
 
