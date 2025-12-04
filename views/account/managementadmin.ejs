@@ -55,9 +55,10 @@
   <div class="management-container">
     <h1><%= title %></h1>
     <h2>Welcome Happy</h2>
-    <% if (locals.notice) { %>
-      <div class="notice"><%= locals.notice %></div>
+    <% if (locals.flash && locals.flash.notice) { %>
+      <div class="notice"><%= locals.flash.notice %></div>
     <% } %>
+
 
     <h3>You're Logged in!</h3>
 

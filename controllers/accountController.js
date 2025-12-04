@@ -221,11 +221,13 @@ async function updateRegister(req, res, next) {
   const {
     account_id,
     account_firstname,
+    account_lastname,
     account_email
   } = req.body
   const updateResult = await accountModel.updateRegister(
     account_id,
     account_firstname,
+    account_lastname,
     account_email
   )
   
@@ -244,7 +246,8 @@ async function updateRegister(req, res, next) {
     errors: [],
     account_id: itemData.account_id,
     account_firstname: itemData.account_firstname,
-    account_lastname: itemData.account_lastname
+    account_lastname: itemData.account_lastname,
+    account_email: itemData.account_email
     })
   }
   

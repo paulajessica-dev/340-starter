@@ -99,9 +99,7 @@
 </head>
   <body>   
 
-      <main class="register-container">
-
-        
+      <main class="register-container">       
 
         <% if (errors) { %>
           <ul class="notice">
@@ -113,8 +111,7 @@
         <h1><%= title %></h1>
 
         <% messages() %>
-
-        <!-- Exibir erros (validation middleware) -->
+        
         <% if (errors && errors.length > 0) { %>
           <div class="errors">
             <ul>

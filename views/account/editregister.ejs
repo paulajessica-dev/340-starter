@@ -101,10 +101,7 @@
       
       <main class="register-container">
         <h1><%= title %></h1>    
-          <% if (messages.notice) { %>
-          <p><%= messages.notice %></p>
-          <% } %>   
-        
+          <% messages() %>          
         <form action="/account/editregister" method="POST">
           <input type="hidden" name="account_id" value="<%= account_id %>">
 
