@@ -55,9 +55,10 @@
   <div class="management-container">
     <h1><%= title %></h1>
     <h2>Welcome Happy</h2>
-    <% if (messages.notice) { %>
-      <p><%= messages.notice %></p>
+    <% if (locals.notice) { %>
+      <div class="notice"><%= locals.notice %></div>
     <% } %>
+
     <h3>You're Logged in!</h3>
 
     <h4><a class="link" href="/account/editregister/<%= account_id %>">Update Account Information</a></h4>

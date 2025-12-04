@@ -232,7 +232,7 @@ async function updateRegister(req, res, next) {
   if (updateResult) {
     const itemName = updateResult.account_firstname + " " + updateResult.account_lastname
     req.flash("notice", `The ${itemName} was successfully updated.`)
-    res.redirect("/account/editregister")
+    res.redirect("/account/managementadmin")
   } else {    
     const itemData = await accountModel.getRegisterByAccountId(account_id)  
         
@@ -262,7 +262,7 @@ async function updatePassword(req, res) {
   await accountModel.updatePassword(account_id, hashedPassword)
 
   req.flash("notice", "Password updated successfully.")
-  res.redirect(`/account/editregister/${account_id}`)
+  res.redirect(`/account/managementadmin`)
 }
 
 

@@ -90,5 +90,15 @@ async function getRegisterByAccountId (account_id) {
   }
 }
 
+/* *****************************
+* Update account password using account_id
+* ***************************** */
+async function updatePassword(account_id, newPassword) {
+  return await pool.query(
+    "UPDATE account SET account_password = $1 WHERE account_id = $2",
+    [newPassword, account_id]
+  )
+}
 
-module.exports = {checkExistingEmail, registerAccount, getAccountByEmail, updateRegister, getRegisterByAccountId}
+
+module.exports = {checkExistingEmail, registerAccount, getAccountByEmail, updateRegister, getRegisterByAccountId, updatePassword}
