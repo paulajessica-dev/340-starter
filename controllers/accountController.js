@@ -74,16 +74,19 @@ async function registerAccount(req, res) {
   }
 }
 
+
 /* ****************************************
  *  Build Management View
  * *************************************** */
 async function buildManagement(req, res) {
   let nav = await utilities.getNav()
+  const accountData = res.locals.accountData
   res.render("account/management", {
     title: "Account Management",
     nav,
     messages: req.flash(),
-    customHeader: true
+    customHeader: true,
+    account_id: accountData.account_id
   })
 }
 
@@ -92,11 +95,13 @@ async function buildManagement(req, res) {
  * *************************************** */
 async function buildAdminManagement(req, res) {
   let nav = await utilities.getNav()
+  const accountData = res.locals.accountData
   res.render("account/managementadmin", {
     title: "Account Management",
     nav,
     messages: req.flash(),
-    customHeader: true
+    customHeader: true,
+    account_id: accountData.account_id
   })
 }
 
@@ -173,6 +178,7 @@ async function authenticateToken(req, res, next) {
     const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET)
     console.log("authenticateToken: decoded =", decoded)
     req.account = decoded
+    res.locals.accountData = decoded
     next()
   } catch (err) {
     console.log("authenticateToken: verify error =", err.message)
@@ -182,4 +188,83 @@ async function authenticateToken(req, res, next) {
 }
 
 
-module.exports = { buildLogin, buildRegister, registerAccount, buildManagement, buildAdminManagement, accountLogin, authenticateToken}
+/* ***************************
+ *  Build edit register view
+ * ************************** */
+async function buildEditRegister(req, res, next) {
+  const account_id = parseInt(req.params.account_id)
+  let nav = await utilities.getNav()
+
+  const itemData = await accountModel.getRegisterByAccountId(account_id)
+  
+  const itemName = `${itemData.account_firstname} ${itemData.account_lastname}`
+  res.render("./account/editregister", {
+    title: "Edit " + itemName,    
+    nav,
+    errors: [],
+    account_id: itemData.account_id,
+    account_firstname: itemData.account_firstname,
+    account_lastname: itemData.account_lastname,
+    account_email: itemData.account_email,
+    account_password: itemData.account_password,
+    account_type: itemData.account_type
+  })
+}
+
+
+
+/* ***************************
+ *  Update Register Data
+ * ************************** */
+async function updateRegister(req, res, next) {
+  let nav = await utilities.getNav()
+  const {
+    account_id,
+    account_firstname,
+    account_email
+  } = req.body
+  const updateResult = await accountModel.updateRegister(
+    account_id,
+    account_firstname,
+    account_email
+  )
+  
+  if (updateResult) {
+    const itemName = updateResult.account_firstname + " " + updateResult.account_lastname
+    req.flash("notice", `The ${itemName} was successfully updated.`)
+    res.redirect("/account/editregister")
+  } else {    
+    const itemData = await accountModel.getRegisterByAccountId(account_id)  
+        
+    const itemName = `${itemData.account_firstname} ${itemData.account_lastname}`
+    req.flash("notice", "Sorry, the update failed.")
+    res.status(501).render("account/editregister", {
+    title: "Edit " + itemName,
+    nav,    
+    errors: [],
+    account_id: itemData.account_id,
+    account_firstname: itemData.account_firstname,
+    account_lastname: itemData.account_lastname
+    })
+  }
+  
+}
+
+/* ***************************
+ *  Update Password Data
+ * ************************** */
+
+async function updatePassword(req, res) {
+  const { account_id, account_password } = req.body
+
+  const hashedPassword = await bcrypt.hash(account_password, 10)
+
+  await accountModel.updatePassword(account_id, hashedPassword)
+
+  req.flash("notice", "Password updated successfully.")
+  res.redirect(`/account/editregister/${account_id}`)
+}
+
+
+
+module.exports = { buildLogin, buildRegister, registerAccount, buildManagement, buildAdminManagement, accountLogin, authenticateToken, buildEditRegister, updateRegister, updatePassword}

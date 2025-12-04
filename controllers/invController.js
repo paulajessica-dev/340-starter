@@ -294,7 +294,7 @@ invCont.updateVehicle = async function (req, res, next) {
     const classificationSelect = await utilities.buildClassificationSelected(itemData.classification_id, itemData.classification_name)
         
     const itemName = `${inv_make} ${inv_model}`
-    req.flash("notice", "Sorry, the insert failed.")
+    req.flash("notice", "Sorry, the update failed.")
     res.status(501).render("inventory/editvehicle", {
     title: "Edit " + itemName,
     nav,
@@ -362,6 +362,8 @@ invCont.deleteVehicle = async function (req, res, next) {
   req.flash("notice", "Sorry, the delete failed.")
   return res.status(501).redirect(`/inv/`)
 }
+
+
 
 
 

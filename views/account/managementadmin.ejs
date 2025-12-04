@@ -26,16 +26,16 @@
       margin-bottom: 1.5rem;
     }
 
-    h2 {
+    h2, h3 {
       font-size: 1.2rem;      
       margin-bottom: 1.5rem;
     }
 
-    
+        
     .link {
       margin-top: 1rem;
       display: block;
-      font-size: 1.5rem;
+      font-size: 1rem;
       color: #333;
     }
 
@@ -54,16 +54,16 @@
 
   <div class="management-container">
     <h1><%= title %></h1>
-    <h2>Welcome Basic</h2>
+    <h2>Welcome Happy</h2>
     <% if (messages.notice) { %>
       <p><%= messages.notice %></p>
     <% } %>
-    <p>You're Logged in</p>
+    <h3>You're Logged in!</h3>
+
+    <h4><a class="link" href="/account/editregister/<%= account_id %>">Update Account Information</a></h4>
+    <h4><a class="link" href="/inv/">Inventory Management</a></h4>
     
-    
-    <a class="link" href="/account/">Edit Account Information</a>
-    <a class="link" href="/inv/">Inventory Management</a>
-    
+        
   </div>
 
 </body>

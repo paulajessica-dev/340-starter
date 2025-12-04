@@ -26,6 +26,17 @@ router.get(
   utilities.handleErrors(accountController.buildManagement)
 );
 
+// Route to build account by editaccount view
+router.get("/editregister/:account_id", utilities.handleErrors(accountController.buildEditRegister))
+
+// Route to update account by editaccount view
+router.post("/editregister", utilities.handleErrors(accountController.updateRegister)
+)
+
+// Route to update password by editaccount view
+router.post("/updatepassword", utilities.handleErrors(accountController.updatePassword)
+)
+
 // Route to register view
 router.get(
   "/register",
