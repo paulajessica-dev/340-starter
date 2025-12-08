@@ -8,28 +8,30 @@ const utilities = require("../utilities/")
  *  Build favorite view
  * ************************** */
 
-async function buildFavorite(req, res, next) {
-  try {
-    const account_id = req.session.account_id;
-    if (!account_id) {
-      req.flash("notice", "You must be logged in to see your favorites.");
-      return res.redirect("/account/login");
+async function buildFavorite(req, res, next) {  
+    try {
+    const loggedUser = res.locals.accountData
+    const paramId = Number(req.params.account_id)
+
+    
+    if (loggedUser.account_id !== paramId) {
+      req.flash("notice", "Unauthorized access.")
+      return res.redirect("/account/login")
     }
 
-    const favorites = await invModel.getFavoritesByAccountId(account_id);
-    const nav = await utilities.getNav();
+    const favorites = await favoriteModel.getFavoritesByAccountId(paramId)
+    const nav = await utilities.getNav()
 
-    res.render("favorite", {
+    res.render("favorite/favorite", {
       title: "My Favorites",
       nav,
       favorites
-    });
+    })
 
   } catch (error) {
-    next(error);
+    next(error)
   }
 }
-
 
 /* ***************************
  *  Add Vehicle to Favorites

@@ -72,7 +72,7 @@ Util.buildClassificationGrid = async function (data, favorites = []) {
             margin-top:8px;
           "
         >
-          ${isFavorited ? "⭐ Favoritado" : "☆ Favoritar"}
+          ${isFavorited ? "⭐ Favorited" : "☆ Favorite"}
         </button>
       `
 
@@ -147,7 +147,7 @@ Util.checkJWTToken = (req, res, next) => {
  *  Check Login
  * ************************************ */
  Util.checkLogin = (req, res, next) => {
-  if (res.locals.loggedin) {
+  if (res.locals.accountData) {
     next()
   } else {
     req.flash("notice", "Please log in.")

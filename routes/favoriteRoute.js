@@ -8,7 +8,9 @@ const utilities = require("../utilities/")
 
 // Route to favorite view
 router.get(
-  "/",
+  "/:account_id",
+  
+  accountController.authenticateToken,
   utilities.handleErrors(favoriteController.buildFavorite)
 )
 

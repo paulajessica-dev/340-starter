@@ -22,14 +22,25 @@ async function checkFavorite(account_id, inv_id) {
   }
 }
 
-async function getFavoritesByAccountId(accountId) {
+async function getFavoritesByAccountId(account_id) {
+  try {
   const sql = `
-    SELECT inv_id
-    FROM favorite
-    WHERE account_id = $1
+    SELECT 
+        i.inv_id,
+        i.inv_image,
+        i.inv_make,
+        i.inv_model,
+        i.inv_year,
+        i.inv_price
+      FROM favorite f
+      JOIN inventory i ON f.inv_id = i.inv_id
+      WHERE f.account_id = $1
   `;
-  const result = await pool.query(sql, [accountId]);
-  return result.rows;
+  const result = await pool.query(sql, [account_id])
+    return result.rows
+  } catch (error) {
+    throw error
+  }
 }
 
 async function getFavoriteIdsByUser(account_id) {
