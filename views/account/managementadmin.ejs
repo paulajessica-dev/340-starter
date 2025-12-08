@@ -54,12 +54,12 @@
 
   <div class="management-container">
     <h1><%= title %></h1>
-    <h2>Welcome Happy</h2>
-    <% if (locals.flash && locals.flash.notice) { %>
-      <div class="notice"><%= locals.flash.notice %></div>
+    <h2>Welcome Basic</h2>
+    <% if (messages.notice && messages.notice.length > 0) { %>
+      <p><%= messages.notice[0] %></p>
     <% } %>
 
-
+     
     <h3>You're Logged in!</h3>
 
     <h4><a class="link" href="/account/editregister/<%= account_id %>">Update Account Information</a></h4>

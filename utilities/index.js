@@ -50,6 +50,24 @@ Util.buildClassificationGrid = async function(data){
       grid += '</h2>'
       grid += '<span>$' 
       + new Intl.NumberFormat('en-US').format(vehicle.inv_price) + '</span>'
+      grid += `
+        <button 
+          class="favorite-btn ${isFavorited ? "favorited" : ""}" 
+          onclick="addFavorite(${vehicle.inv_id}, this)"
+          data-id="${vehicle.inv_id}"
+          style="
+            background:${isFavorited ? "#ffe28a" : "#faf8eb"};
+            border:none; 
+            padding:5px 10px; 
+            border-radius:5px; 
+            cursor:pointer; 
+            margin-top:8px;
+          "
+        >
+          ${isFavorited ? "⭐ Favoritado" : "☆ Favoritar"}
+        </button>
+        `
+
       grid += '</div>'
       grid += '</li>'
     })

@@ -1,6 +1,7 @@
 const invModel = require("../models/inventory-model")
 const utilities = require("../utilities/")
-
+const accountModel = require("../models/account-model")
+const favoriteModel = require("../models/favorite-model")
 
 const invCont = {}
 
@@ -11,8 +12,8 @@ invCont.buildByClassificationId = async function (req, res, next) {
   try{        
       const classification_id = req.params.classification_id
       const data = await invModel.getInventoryByClassificationId(classification_id)
-
-      //If not found data
+      const favorites = await favoriteModel.getFavoriteIdsByUser(account_id)
+      
       if (!data || data.length === 0) {
         const err = new Error("Not found vehicle to this classification.")
         err.status = 404
@@ -20,16 +21,15 @@ invCont.buildByClassificationId = async function (req, res, next) {
       }
 
       const grid = await utilities.buildClassificationGrid(data)
-      //console.log("GRID:", grid)
+     
       let nav = await utilities.getNav()
       const className = data[0].classification_name
-
-
-      //console.log("Rendering classification page for:", className)
+      
       res.render("./inventory/classification", {
         title: className + " vehicles",
         nav,
         grid,
+        favorites
       })
 
     } catch (error){
@@ -362,10 +362,6 @@ invCont.deleteVehicle = async function (req, res, next) {
   req.flash("notice", "Sorry, the delete failed.")
   return res.status(501).redirect(`/inv/`)
 }
-
-
-
-
 
 
 module.exports = invCont

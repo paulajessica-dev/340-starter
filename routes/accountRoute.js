@@ -1,6 +1,5 @@
 const express = require("express")
 const router = express.Router()
-
 const utilities = require("../utilities/")
 const accountController = require("../controllers/accountController")
 const validate = require('../utilities/account-validation')
@@ -58,6 +57,5 @@ router.post(
   validate.checkLoginData,
   utilities.handleErrors(accountController.accountLogin)
 )
-
 
 module.exports = router

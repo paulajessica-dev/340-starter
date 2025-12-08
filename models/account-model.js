@@ -90,7 +90,7 @@ async function updateRegister(
 async function getRegisterByAccountId (account_id) {
   try {
     const result = await pool.query(
-      'SELECT account_id, account_firstname, account_lastname, account_email, account_password FROM account WHERE account_id = $1',
+      'SELECT account_id, account_firstname, account_lastname, account_email, account_password, account_type FROM account WHERE account_id = $1',
       [account_id])
     return result.rows[0]
   } catch (error) {

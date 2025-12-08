@@ -55,13 +55,13 @@
   <div class="management-container">
     <h1><%= title %></h1>
     <h2>Welcome Basic</h2>
-    <% if (messages.notice) { %>
-      <p><%= messages.notice %></p>
+    <% if (messages.notice && messages.notice.length > 0) { %>
+      <p><%= messages.notice[0] %></p>
     <% } %>
+
     <p>You're Logged in</p>   
     
-    <h3>Update Account Information</h3>
-    <p><a class="link" href="/account/editregister"></a></p>
+    <h3><a class="link" href="/account/editregister/<%= account_id %>">Update Account Information</a></h3>
     
   </div>
 

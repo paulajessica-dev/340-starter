@@ -232,13 +232,22 @@ async function updateRegister(req, res, next) {
   )
   
   if (updateResult) {
-    const itemName = updateResult.account_firstname + " " + updateResult.account_lastname
-    req.flash("notice", `The ${itemName} was successfully updated.`)
-    res.redirect("/account/managementadmin")
+    
+    const accountData = await accountModel.getRegisterByAccountId(account_id)
+
+    req.flash("notice", `The ${accountData.account_firstname} was successfully updated.`)
+
+    if (accountData.account_type.toLowerCase() === "admin") {
+        return res.redirect("/account/managementadmin")
+    }
+    else {
+        return res.redirect("/account/management")
+    }
+  
   } else {    
-    const itemData = await accountModel.getRegisterByAccountId(account_id)  
-        
-    const itemName = `${itemData.account_firstname} ${itemData.account_lastname}`
+            
+    const itemName = `${accountData.account_firstname} ${accountData.account_lastname}`
+
     req.flash("notice", "Sorry, the update failed.")
     res.status(501).render("account/editregister", {
     title: "Edit " + itemName,

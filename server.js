@@ -11,8 +11,11 @@ const app = express()
 const static = require("./routes/static")
 const expressLayouts = require("express-ejs-layouts")
 const baseController = require("./controllers/baseController")
+
 const inventoryRoute = require("./routes/inventoryRoute")
 const accountRoute = require("./routes/accountRoute")
+const favoriteRoute = require("./routes/favoriteRoute")
+
 const errorHandler = require("./middleware/errorHandler")
 const session = require("express-session")
 const messages = require("express-messages")
@@ -72,6 +75,10 @@ app.use("/inv", inventoryRoute)
 
 // Account routes
 app.use("/account", accountRoute)
+
+
+// Favorite routes
+app.use("/favorite", favoriteRoute)
 
 
 /* ***********************

@@ -58,4 +58,22 @@ router.post(
   utilities.handleErrors(invController.addVehicle)
 )
 
+// Route to favorite view
+router.get(
+  "/favorite",
+  utilities.handleErrors(invController.buildFavorite)
+)
+
+// Route to add favorite view
+router.post(
+  "/favorite/addvehicle",
+  utilities.handleErrors(invController.addFavorite)
+)
+
+// Route to delete favorite view
+router.post(
+  "/favorite/deletevehicle",
+  utilities.handleErrors(invController.deleteFavorite)
+)
+
 module.exports = router;
