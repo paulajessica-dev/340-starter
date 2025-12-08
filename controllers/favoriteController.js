@@ -63,7 +63,7 @@ async function addFavorite(req, res) {
     
     console.error("addFavorite error:", err);
     
-    return res.status(500).json({ success: false, message: "Erro interno ao adicionar favorito" });
+    return res.status(500).json({ success: false, message: "Internal error while adding to favorites." });
   }
 }
 

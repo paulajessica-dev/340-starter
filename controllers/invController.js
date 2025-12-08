@@ -9,34 +9,41 @@ const invCont = {}
  *  Build inventory by classification view
  * ************************** */
 invCont.buildByClassificationId = async function (req, res, next) {
-  try{        
-      const classification_id = req.params.classification_id
-      const data = await invModel.getInventoryByClassificationId(classification_id)
-      const favorites = await favoriteModel.getFavoriteIdsByUser(account_id)
-      
-      if (!data || data.length === 0) {
-        const err = new Error("Not found vehicle to this classification.")
-        err.status = 404
-        return next(err)
-      }
+  try {        
+    const classification_id = req.params.classification_id
+    const data = await invModel.getInventoryByClassificationId(classification_id)
 
-      const grid = await utilities.buildClassificationGrid(data)
-     
-      let nav = await utilities.getNav()
-      const className = data[0].classification_name
-      
-      res.render("./inventory/classification", {
-        title: className + " vehicles",
-        nav,
-        grid,
-        favorites
-      })
+    // ✅ Pega o account_id apenas se o usuário estiver logado
+    let favorites = []
+    let account_id = null
 
-    } catch (error){
-        next(error)
+    if (res.locals.accountData) {
+      account_id = res.locals.accountData.account_id
+      favorites = await favoriteModel.getFavoriteIdsByUser(account_id)
     }
-    
+
+    if (!data || data.length === 0) {
+      const err = new Error("Not found vehicle to this classification.")
+      err.status = 404
+      return next(err)
+    }
+
+    const grid = await utilities.buildClassificationGrid(data)
+    let nav = await utilities.getNav()
+    const className = data[0].classification_name
+      
+    res.render("./inventory/classification", {
+      title: className + " vehicles",
+      nav,
+      grid,
+      favorites
+    })
+
+  } catch (error) {
+    next(error)
+  }
 }
+
 
 /* ***************************
  *  Build inventory by detail view
